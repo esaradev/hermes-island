@@ -1,0 +1,10 @@
+name: hermes-island
+version: 0.1.0
+description: Bridge between Hermes agents and the Hermes Island notch app. Sends session events over Unix socket.
+author: esaradev
+provides_hooks:
+  - on_session_start
+  - pre_tool_call
+  - post_tool_call
+  - post_llm_call
+  - on_session_end
