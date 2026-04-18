@@ -1,56 +1,55 @@
 # Hermes Island
 
-macOS Dynamic Island notch app for Hermes agents. Monitor sessions, fabric memory, and multi-agent workflows from the menu bar.
-
-Forked from [claude-island](https://github.com/farouqaldori/claude-island) and adapted for the Hermes agent framework.
-
-## What it does
-
-A floating notch overlay at the top of your screen that expands when your Hermes agent is working:
-
-- **Collapsed** -- agent name, green dot when active
-- **Expanded** -- current action, tool being used, session status
-- **Full view** -- session transcript, tool results, quick actions
-
-## How it works
-
-```
-Hermes Agent
-  └── hermes_island plugin (installed by the app)
-        └── sends events over Unix socket (/tmp/hermes-island.sock)
-              └── HermesIsland.app listens and renders notch UI
-```
-
-The app installs a Hermes plugin at `~/.hermes/plugins/hermes_island/` on first launch. The plugin hooks into `on_session_start`, `pre_tool_call`, `post_tool_call`, `post_llm_call`, and `on_session_end` to send real-time events to the notch.
-
-When the Icarus memory plugin is also loaded, the notch also shows fabric write/recall events.
+macOS Dynamic Island notch app for Hermes agents. Monitor sessions, fabric memory, and multi-agent workflows from your screen's notch.
 
 ## Install
 
-1. Build from source:
+**Download** the latest `.zip` from [Releases](https://github.com/esaradev/hermes-island/releases), unzip, and drag `HermesIsland.app` to Applications.
+
+First launch on an unsigned build: right-click the app > Open, or run:
+```bash
+xattr -cr /Applications/HermesIsland.app
+```
+
+**Build from source** (requires Xcode 16+):
 ```bash
 git clone https://github.com/esaradev/hermes-island.git
 cd hermes-island
 xcodebuild -scheme HermesIsland -configuration Release build
 ```
 
-2. Or download from releases (when available).
+Launch the app. It auto-installs a Hermes plugin at `~/.hermes/plugins/hermes_island/`.
 
-3. Launch the app. It auto-installs the Hermes plugin.
+## What it does
 
-4. Start Hermes in a terminal:
-```bash
-hermes chat
+A floating notch overlay that expands when your Hermes agent is working:
+
+- **Collapsed** -- agent name, green dot when active
+- **Expanded** -- current action, tool being used, session status
+- **Full view** -- session transcript, tool results, quick actions
+
+When the [Icarus memory plugin](https://github.com/esaradev/icarus-plugin) is also loaded, the notch shows fabric write/recall events too.
+
+## How it works
+
+```
+Hermes Agent
+  +-- hermes_island plugin (auto-installed by the app)
+        +-- sends events over Unix socket (/tmp/hermes-island.sock)
+              +-- HermesIsland.app listens and renders notch UI
 ```
 
-The notch should expand when the session starts and show tool activity.
+The plugin hooks into `on_session_start`, `pre_tool_call`, `post_tool_call`, `post_llm_call`, and `on_session_end` to send real-time events.
 
 ## Requirements
 
 - macOS 15.0+
 - [Hermes](https://github.com/NousResearch/hermes-agent) v0.5.0+
-- Xcode 16+ (for building from source)
+
+## Support
+
+Free and open source. If you find it useful, [sponsor the project](https://github.com/sponsors/esaradev).
 
 ## License
 
-MIT (see LICENSE.md)
+Apache 2.0 (see LICENSE.md)
